@@ -29,6 +29,11 @@ app.get("/", (req, res) => {
 });
 
 // INFO: Start server
-app.listen(port, () =>
-  console.log(`Server is running on at http://localhost:${port}`)
-);
+if (!process.env.VERCEL) {
+  const serverPort = port || 4000;
+  app.listen(serverPort, () =>
+    console.log(`Server is running on at http://localhost:${serverPort}`)
+  );
+}
+
+export default app;
