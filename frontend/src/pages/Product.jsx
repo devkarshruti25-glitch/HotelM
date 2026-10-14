@@ -48,7 +48,15 @@ const Product = () => {
             }
           </div>
           <div className='w-full sm:w-[80%] rounded-xl shadow-lg'>
-            <img src={image} className='w-full h-auto rounded-xl' alt={productData.name} />
+            <img
+  src={image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'}
+  className="w-full h-auto rounded-xl object-cover max-h-[500px]"
+  alt={productData.name}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80';
+  }}
+/>
           </div>
         </div>
         {/* Product Info */}

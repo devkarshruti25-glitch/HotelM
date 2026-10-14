@@ -77,7 +77,11 @@ const List = ({ token }) => {
             {/* Image */}
             <img
               className="w-12 h-12 object-cover rounded-md mx-auto"
-              src={item.image[0]}
+              src={item.image && item.image[0] ? item.image[0] : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80';
+  }}
               alt={item.name}
             />
             {/* Name */}

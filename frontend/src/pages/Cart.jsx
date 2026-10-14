@@ -61,7 +61,15 @@ const Cart = () => {
             return (
               <div key={`${item._id}-${item.size}`} className='grid py-4 text-[#2C3E50] border-t border-b border-gray-200 grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'>
                 <div className='flex items-start gap-6'>
-                  <img className='w-16 sm:w-20 rounded-lg shadow-md' src={productData.image[0]} alt={productData.name} />
+                  <img
+  className="w-16 sm:w-20 rounded-lg shadow-md aspect-square object-cover"
+  src={productData.image && productData.image[0] ? productData.image[0] : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'}
+  alt={productData.name}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80';
+  }}
+/>
                   <div>
                     <p className='text-sm font-medium sm:text-lg'>{productData.name}</p>
                     <div className='flex items-center gap-5 mt-2'>
