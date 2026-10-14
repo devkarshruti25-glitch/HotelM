@@ -5,11 +5,13 @@ import { backendUrl } from "../App";
 import { toast } from "react-toastify";
 
 const Add = ({ token }) => {
+  // State for images
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [image4, setImage4] = useState(null);
 
+  // State for form data
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -17,6 +19,26 @@ const Add = ({ token }) => {
   const [price, setPrice] = useState("");
   const [sizes, setSizes] = useState([]);
   const [bestSeller, setBestSeller] = useState(false);
+
+  // --- Premium Tailwind Styles ---
+  const premiumStyles = {
+    text: "text-[#2C3E50]",
+    heading: "text-lg font-semibold text-[#2C3E50]",
+    input:
+      "w-full px-4 py-2.5 border border-[#2C3E50]/30 rounded-lg outline-none transition duration-150 focus:border-[#A37D40] focus:ring-1 focus:ring-[#A37D40] max-w-[500px]",
+    btnPrimary:
+      "px-6 py-3 mt-2 text-white font-semibold rounded-lg bg-[#A37D40] hover:bg-[#906D38] transition-colors duration-200",
+    btnSecondary:
+      "px-6 py-3 mt-2 text-white font-semibold rounded-lg bg-[#2C3E50] hover:bg-[#4a6581] transition-colors duration-200",
+    sizeBase:
+      "px-4 py-2 cursor-pointer text-sm font-medium rounded-md transition-colors duration-150",
+    sizeActive: "bg-[#A37D40] text-white",
+    sizeInactive: "bg-gray-200 text-[#2C3E50] hover:bg-gray-300",
+    uploadBox:
+      "w-20 h-20 object-cover border-2 border-dashed border-[#A37D40]/50 rounded-lg cursor-pointer hover:border-[#A37D40] transition-colors",
+    checkbox: "w-4 h-4 accent-[#A37D40] cursor-pointer",
+  };
+  // ---
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -50,7 +72,7 @@ const Add = ({ token }) => {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -68,139 +90,110 @@ const Add = ({ token }) => {
     setBestSeller(false);
   };
 
+  // Helper to render image upload boxes
+  const renderImageUpload = (image, setImage, id) => (
+    <label htmlFor={id}>
+      <img
+        className={premiumStyles.uploadBox}
+        src={!image ? assets.upload_area : URL.createObjectURL(image)}
+        alt="Upload"
+      />
+      <input
+        onChange={(e) => setImage(e.target.files[0])}
+        type="file"
+        id={id}
+        hidden
+        accept="image/*"
+      />
+    </label>
+  );
+
   return (
     <form
       onSubmit={onSubmitHandler}
-      className="flex flex-col items-start w-full gap-3"
+      className={`flex flex-col items-start w-full gap-5 p-8 ${premiumStyles.text}`}
     >
       <div>
-        <p className="mb-2 text-lg font-semibold">Upload Product Image(s)</p>
-        <div className="flex gap-2">
-          <label htmlFor="image1">
-            <img
-              className="w-20 border-2 border-gray-500 rounded-lg cursor-pointer"
-              src={!image1 ? assets.upload_area : URL.createObjectURL(image1)}
-              alt="Upload Images"
-            />
-            <input
-              onChange={(e) => setImage1(e.target.files[0])}
-              type="file"
-              id="image1"
-              hidden
-              accept="image/*"
-            />
-          </label>
-          <label htmlFor="image2">
-            <img
-              className="w-20 border-2 border-gray-500 rounded-lg cursor-pointer"
-              src={!image2 ? assets.upload_area : URL.createObjectURL(image2)}
-              alt="Upload Images"
-            />
-            <input
-              onChange={(e) => setImage2(e.target.files[0])}
-              type="file"
-              id="image2"
-              hidden
-              accept="image/*"
-            />
-          </label>
-          <label htmlFor="image3">
-            <img
-              className="w-20 border-2 border-gray-500 rounded-lg cursor-pointer"
-              src={!image3 ? assets.upload_area : URL.createObjectURL(image3)}
-              alt="Upload Images"
-            />
-            <input
-              onChange={(e) => setImage3(e.target.files[0])}
-              type="file"
-              id="image3"
-              hidden
-              accept="image/*"
-            />
-          </label>
-          <label htmlFor="image4">
-            <img
-              className="w-20 border-2 border-gray-500 rounded-lg cursor-pointer"
-              src={!image4 ? assets.upload_area : URL.createObjectURL(image4)}
-              alt="Upload Images"
-            />
-            <input
-              onChange={(e) => setImage4(e.target.files[0])}
-              type="file"
-              id="image4"
-              hidden
-              accept="image/*"
-            />
-          </label>
+        <p className={premiumStyles.heading}>Upload Product Image(s)</p>
+        <p className="text-xs text-gray-500 mb-2">First image is the main image.</p>
+        <div className="flex gap-3">
+          {renderImageUpload(image1, setImage1, "image1")}
+          {renderImageUpload(image2, setImage2, "image2")}
+          {renderImageUpload(image3, setImage3, "image3")}
+          {renderImageUpload(image4, setImage4, "image4")}
         </div>
       </div>
+
       <div className="w-full mt-2">
-        <p className="mb-2 text-lg font-semibold">Product Item Name</p>
+        <p className={`mb-2 ${premiumStyles.heading}`}>Product Item Name</p>
         <input
           onChange={(e) => setName(e.target.value)}
           value={name}
-          className="w-full px-3 py-2 border-gray-500 max-w-[500px]"
+          className={premiumStyles.input}
           type="text"
           placeholder="Enter Product Name"
           required
         />
       </div>
+
       <div className="w-full mt-2">
-        <p className="mb-2 text-lg font-semibold">Product Item Description</p>
+        <p className={`mb-2 ${premiumStyles.heading}`}>Product Item Description</p>
         <textarea
           onChange={(e) => setDescription(e.target.value)}
           value={description}
-          className="w-full px-3 py-2 border-gray-500 max-w-[500px]"
-          type="text"
+          className={`${premiumStyles.input} min-h-[100px]`}
           placeholder="Enter Product Description"
           required
         />
       </div>
-      <div className="flex flex-col w-full gap-2 sm:flex-row sm:gap-8">
-        <div>
-          <p className="mb-2 text-lg font-semibold">Product Category</p>
+
+      <div className="flex flex-col w-full gap-5 sm:flex-row sm:gap-8">
+        <div className="flex-1">
+          <p className={`mb-2 ${premiumStyles.heading}`}>Product Category</p>
           <select
             onChange={(e) => setCategory(e.target.value)}
             value={category}
-            className="w-full px-3 py-2 border-gray-500 max-w-[500px]"
+            className={premiumStyles.input}
             required
           >
             <option value="">Select Category</option>
-            <option value="Men">Men</option>
-            <option value="Women">Women</option>
-            <option value="Kids">Kids</option>
+            <option value="Veg">Veg</option>
+            <option value="Non Veg">Non Veg</option>
           </select>
         </div>
-        <div>
-          <p className="mb-2 text-lg font-semibold">Product Sub Category</p>
+        <div className="flex-1">
+          <p className={`mb-2 ${premiumStyles.heading}`}>Product Sub Category</p>
           <select
             onChange={(e) => setSubCategory(e.target.value)}
             value={subCategory}
-            className="w-full px-3 py-2 border-gray-500 max-w-[500px]"
+            className={premiumStyles.input}
             required
           >
             <option value="">Select Sub Category</option>
-            <option value="Topwear">Topwear</option>
-            <option value="Bottomwear">Bottomwear</option>
-            <option value="Winterwear">Winterwear</option>
+            <option value="Starter">Starter</option>
+            <option value="Main Course">Main Course</option>
+            <option value="End Course">Desserts / Sides</option>
           </select>
         </div>
-        <div>
-          <p className="mb-2 text-lg font-semibold">Product Price</p>
+        <div className="flex-1">
+          <p className={`mb-2 ${premiumStyles.heading}`}>Product Price</p>
           <input
             onChange={(e) => setPrice(e.target.value)}
             value={price}
-            className="w-full px-3 py-2 border-gray-500 max-w-[500px]"
+            className={premiumStyles.input}
             type="number"
+            min="0"
             placeholder="Enter Product Price"
             required
           />
         </div>
       </div>
+
       <div>
-        <p className="mb-2 text-lg font-semibold">Product Sizes</p>
+        <p className={`mb-2 ${premiumStyles.heading}`}>Product Sizes</p>
         <div className="flex gap-3">
-          {["S", "M", "L", "XL", "XXL"].map((size) => (
+          {/* CONTENT FIX: Changed S/M/L to food-appropriate sizes */}
+          {["Common","Half", "Full", "Family"].map((size) => (
             <div
               key={size}
               onClick={() =>
@@ -212,11 +205,11 @@ const Add = ({ token }) => {
               }
             >
               <p
-                className={`${
+                className={`${premiumStyles.sizeBase} ${
                   sizes.includes(size)
-                    ? "bg-gray-500 text-white rounded-md"
-                    : "bg-slate-200"
-                } px-3 py-1 cursor-pointer`}
+                    ? premiumStyles.sizeActive
+                    : premiumStyles.sizeInactive
+                }`}
               >
                 {size}
               </p>
@@ -224,10 +217,12 @@ const Add = ({ token }) => {
           ))}
         </div>
       </div>
+
       <div className="flex gap-2 mt-2">
         <input
           type="checkbox"
           id="bestSeller"
+          className={premiumStyles.checkbox}
           checked={bestSeller}
           onChange={() => setBestSeller((prev) => !prev)}
         />
@@ -235,16 +230,14 @@ const Add = ({ token }) => {
           Add to Best Seller
         </label>
       </div>
+
       <div className="flex flex-col w-full gap-2 sm:flex-row sm:gap-8">
-        <button
-          type="submit"
-          className="px-5 py-2 mt-2 text-white rounded-lg bg-slate-700"
-        >
+        <button type="submit" className={premiumStyles.btnPrimary}>
           Add Product
         </button>
         <button
           type="button"
-          className="px-5 py-2 mt-2 text-white rounded-lg bg-slate-700"
+          className={premiumStyles.btnSecondary}
           onClick={resetForm}
         >
           Reset Details

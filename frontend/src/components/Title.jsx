@@ -3,12 +3,15 @@ import React from 'react'
 const Title = ({text1, text2}) => {
   return (
     <div className='inline-flex items-center gap-2 mb-3'>
-        <p className='text-gray-500'>
+        {/* Set the primary text to Deep Charcoal */}
+        <p className='text-[#2C3E50]'>
             {text1}
             &nbsp;
-            <span className='font-medium text-gray-700'>{text2}</span>
+            {/* Set the accented text to Rich Bronze */}
+            <span className='font-medium text-[#A37D40]'>{text2}</span>
         </p>
-        <p className='w-8 sm:w-12 h-[1px] sm:h-[2px] bg-gray-700'></p>
+        {/* Set the accent line to Rich Bronze */}
+        <p className='w-8 sm:w-12 h-[1px] sm:h-[2px] bg-[#A37D40]'></p>
     </div>
   )
 }

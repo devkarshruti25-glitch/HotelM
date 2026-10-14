@@ -17,7 +17,8 @@ const List = ({ token }) => {
       }
     } catch (error) {
       console.error(error);
-      toast.error(response.data.message);
+      // FIX: Handle network errors or errors without a response message
+      toast.error(error.response?.data?.message || "Failed to fetch products.");
     }
   };
 
@@ -31,13 +32,14 @@ const List = ({ token }) => {
 
       if (response.data.success) {
         toast.info(response.data.message);
-        await fetchListProducts();
+        await fetchListProducts(); // Refresh list
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
       console.error(error);
-      toast.error(response.data.message);
+      // FIX: Handle network errors or errors without a response message
+      toast.error(error.response?.data?.message || "Failed to remove product.");
     }
   };
 
@@ -46,41 +48,64 @@ const List = ({ token }) => {
   }, []);
 
   return (
-    <>
-      <div className="flex flex-col gap-2">
-        {/* List Table Title */}
-        <div className="hidden md:grid grid-cols-[0.5fr_1fr_1.5fr_0.5fr_0.5fr_0.5fr_0.2fr] items-center py-1 px-2 border bg-gray-200 text-xl text-center">
-          <b>Image</b>
-          <b>Name</b>
-          <b>Description</b>
-          <b>Category</b>
-          <b>Sub Category</b>
-          <b>Price</b>
+    <div className="p-8 w-full text-[#2C3E50]">
+      <h2 className="text-2xl font-semibold mb-6">All Food Items List</h2>
+      <div className="flex flex-col gap-0">
+        
+        {/* List Table Header */}
+        <div className="hidden md:grid grid-cols-[0.5fr_2fr_3fr_1fr_1fr_1fr_0.5fr] items-center gap-4 py-3 px-3 border-b-2 border-gray-200 text-xs font-semibold uppercase text-gray-500">
+          <b className="text-center">Image</b>
+          <b className="text-left">Name</b>
+          <b className="text-left">Description</b>
+          <b className="text-center">Category</b>
+          <b className="text-center">Sub Category</b>
+          <b className="text-center">Price</b>
           <b className="text-center">Action</b>
         </div>
+
         {/* Display Products */}
-        {listProducts.map((item, index) => (
+        {listProducts.length === 0 && (
+          <p className="py-10 text-center text-gray-500">No products found.</p>
+        )}
+
+        {listProducts.map((item) => (
           <div
-            className="grid grid-cols-[0.5fr_1fr_1.5fr_0.5fr_0.5fr_0.5fr_0.2fr] md:grid-cols-[0.5fr_1fr_1.5fr_0.5fr_0.5fr_0.5fr_0.2fr] items-center gap-2 py-1 px-2 border text-sm text-center"
-            key={index}
+            // FIX: Use item._id for a stable key
+            key={item._id}
+            className="grid grid-cols-[0.5fr_2fr_3fr_1fr_1fr_1fr_0.5fr] md:grid-cols-[0.5fr_2fr_3fr_1fr_1fr_1fr_0.5fr] items-center gap-4 py-3 px-3 border-b border-gray-200 text-sm text-center"
           >
-            <img className="w-12" src={item.image[0]} alt="Product Image" />
-            <p className="text-left">{item.name}</p>
-            <p className="text-left">{item.description}</p>
-            <p>{item.category}</p>
-            <p>{item.subCategory}</p>
-            <p>{currency(item.price)}</p>
-            <p
-              onClick={() => removeProduct(item._id)}
-              className="font-bold text-center text-gray-800 bg-red-500 rounded-full cursor-pointer md:text-center max-w-7"
-            >
-              X
+            {/* Image */}
+            <img
+              className="w-12 h-12 object-cover rounded-md mx-auto"
+              src={item.image[0]}
+              alt={item.name}
+            />
+            {/* Name */}
+            <p className="text-left font-medium">{item.name}</p>
+            {/* Description */}
+            <p className="text-left text-xs text-gray-600 line-clamp-2">
+              {item.description}
             </p>
+            {/* Category */}
+            <p className="text-xs bg-gray-100 px-2 py-1 rounded-full w-fit mx-auto">{item.category}</p>
+            {/* Sub Category */}
+            <p className="text-xs bg-gray-100 px-2 py-1 rounded-full w-fit mx-auto">{item.subCategory}</p>
+            {/* Price */}
+            <p className="font-semibold">{currency(item.price)}</p>
+            {/* Remove Button */}
+            <div
+              onClick={() => removeProduct(item._id)}
+              className="mx-auto w-8 h-8 flex items-center justify-center text-red-600 bg-red-100 rounded-full cursor-pointer hover:bg-red-200 hover:text-red-800 transition-colors duration-200"
+              title="Remove Item"
+            >
+              <b className="text-xl leading-none select-none">×</b>
+            </div>
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
 export default List;
+

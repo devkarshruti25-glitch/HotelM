@@ -2,29 +2,46 @@ import React from 'react'
 import { assets } from '../assets/assets'
 
 const OurPolicy = () => {
+
+    // Premium Color Palette
+    const colors = {
+      text: 'text-[#2C3E50]', // Deep Charcoal
+      subtleText: 'text-[#2C3E50]/70', // Lighter Charcoal
+      border: 'border-[#2C3E50]/10',
+      background: 'bg-[#FAF7F5]' // Creamy Off-White (applied to page)
+    };
+
   return (
-    <div className='flex flex-col justify-around gap-12 py-8 text-xs text-center text-gray-700 sm:flex-row sm:gap-2 sm:text-sm md:text-base'>
-        <div>
-            <img src={assets.exchange_icon} className='w-12 m-auto mb-3' alt="Exchange" />
-            <p className='mb-2 font-semibold'>Easy Return & Exchange Policy</p>
-            <p className='text-gray-400'>
-                Easy Returns/exchanges within 10 days.
+    // Framed container for a premium feel
+    <div className={`flex flex-col justify-around gap-12 py-16 text-center ${colors.text} sm:flex-row sm:gap-6 border-y ${colors.border}`}>
+        
+        {/* Policy 1: Freshness Guarantee */}
+        <div className='flex flex-col items-center p-4'>
+            <img src={assets.exchange_icon} className='w-12 m-auto mb-4' alt="Freshness Guarantee" />
+            <p className='mb-2 text-base font-semibold md:text-lg'>Freshness Guarantee</p>
+            <p className={`text-sm ${colors.subtleText}`}>
+                We promise your food arrives fresh, or we'll make it right.
             </p>
         </div>
-        <div>
-            <img src={assets.quality_icon} className='w-12 m-auto mb-3' alt="Exchange" />
-            <p className='mb-2 font-semibold'>Our Quality Policy</p>
-            <p className='text-gray-400'>
-                Trendify ensures top-quality products.
+
+        {/* Policy 2: Quality Ingredients */}
+        <div className='flex flex-col items-center p-4'>
+            <img src={assets.quality_icon} className='w-12 m-auto mb-4' alt="Quality Ingredients" />
+            <p className='mb-2 text-base font-semibold md:text-lg'>Premium Quality</p>
+            <p className={`text-sm ${colors.subtleText}`}>
+                Tasty Food ensures top-quality, chef-selected ingredients.
             </p>
         </div>
-        <div>
-            <img src={assets.support_img} className='w-12 m-auto mb-3' alt="Exchange" />
-            <p className='mb-2 font-semibold'>Best Customer Support</p>
-            <p className='text-gray-400'>
-                We support via email, phone, or chat.
+        
+        {/* Policy 3: Customer Support */}
+        <div className='flex flex-col items-center p-4'>
+            <img src={assets.support_img} className='w-12 m-auto mb-4' alt="Customer Support" />
+            <p className='mb-2 text-base font-semibold md:text-lg'>Gourmet Support</p>
+            <p className={`text-sm ${colors.subtleText}`}>
+                We're here to help via email, phone, or live chat.
             </p>
         </div>
+
     </div>
   )
 }

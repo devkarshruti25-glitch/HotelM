@@ -1,22 +1,35 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+/* 1. FONT: Changed to 'Inter' for a cleaner, premium feel */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
-  font-family: Outfit;
+  /* 1. FONT: Applied 'Inter' */
+  font-family: "Inter", sans-serif;
 }
 
-select, input, textarea{
-  border: 2px solid #c2c2c2;
-  outline-color: rgb(49, 51, 51);
+/* 2. FORM STYLING: Aligned with premium brand colors */
+select, input, textarea {
+  /* Default border is Deep Charcoal (lightened) */
+  border: 1px solid #2C3E50;
   border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+/* On focus, outline with Rich Bronze */
+select:focus, input:focus, textarea:focus {
+  border-color: #A37D40;
+  box-shadow: 0 0 0 2px #A37D4060; /* Soft Rich Bronze glow */
+}
+
+/* 3. ACTIVE CLASS: Updated for admin sidebar to match brand */
 .active {
-  background-color: #ade5ff67;
-  border-color: #1d1c1c;
-  border-width: 2px;
+  background-color: #A37D4015; /* Very light bronze background */
+  border-color: #A37D40; /* Rich Bronze border */
+  color: #2C3E50; /* Ensure text is dark */
+  font-weight: 600;
   border-right: 0;
 }
